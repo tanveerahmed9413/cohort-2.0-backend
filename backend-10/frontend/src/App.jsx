@@ -11,7 +11,7 @@ const App = () => {
   // notes fetch
   function fetchNotes() {
     axios
-      .get("https://cohort-2-0-backend-1x2v.onrender.com")
+      .get("https://cohort-2-0-backend-1x2v.onrender.com/api/notes")
       .then((res) => {
         console.log(res.data.note);
         setnotes(res.data.note);
@@ -29,7 +29,7 @@ const App = () => {
     e.preventDefault();
 
     axios
-      .post("https://cohort-2-0-backend-1x2v.onrender.com", {
+      .post("https://cohort-2-0-backend-1x2v.onrender.com/api/notes", {
         title,
         description,
       })
@@ -44,7 +44,7 @@ const App = () => {
 
  function deleteHandler(noteId){
 
-  axios.delete('https://cohort-2-0-backend-1x2v.onrender.com'+noteId)
+  axios.delete('https://cohort-2-0-backend-1x2v.onrender.com/api/notes/'+noteId)
   .then((res)=>{
     fetchNotes()
   })
