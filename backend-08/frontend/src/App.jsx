@@ -10,11 +10,7 @@ const App = () => {
   axios.get('http://localhost:3000/api/notes')
   .then((res)=>{
     setnotes(res.data.note)
-    
   })
-  // .catch(err => console.log(err)
-  // )
-  
   
   return (
     <div className="main">
