@@ -17,7 +17,6 @@ app.use(express.static('./public'))
 
 app.post('/api/notes', async(req,res)=>{
     let {title,description} = req.body
-    console.log(title,description);
     
 
     let note = await noteModel.create({
@@ -62,15 +61,21 @@ app.delete('/api/notes/:id', async(req,res)=>{
 })
 // PATCH '/api/notes'
 
-app.patch('/api/notes/:id', async(req,res)=>{
+app.patch('/api/notes/:id', async (req, res) => {
 
-    let id = req.params.id
-    let note = await noteModel.findByIdAndDelete(id)
+  let id = req.params.id
+  let { title, description } = req.body
 
-    res.status(200).json({
-        message: 'note update successfull',
-        note
-    })
+  let note = await noteModel.findByIdAndUpdate(
+    id,
+    { title, description },
+    { new: true }
+  )
+
+  res.status(200).json({
+    message: "note update successful",
+    note
+  })
 })
 
 

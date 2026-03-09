@@ -11,9 +11,9 @@ const App = () => {
   // notes fetch
   function fetchNotes() {
     axios
-      .get("https://cohort-2-0-backend-1x2v.onrender.com/api/notes")
+      .get("http://localhost:3000/api/notes")
       .then((res) => {
-        console.log(res.data.note);
+        console.log(res.data);
         setnotes(res.data.note);
       })
       .catch((err) => {
@@ -29,7 +29,7 @@ const App = () => {
     e.preventDefault();
 
     axios
-      .post("https://cohort-2-0-backend-1x2v.onrender.com/api/notes", {
+      .post("http://localhost:3000/api/notes", {
         title,
         description,
       })
@@ -44,7 +44,7 @@ const App = () => {
 
  function deleteHandler(noteId){
 
-  axios.delete('https://cohort-2-0-backend-1x2v.onrender.com/api/notes/'+noteId)
+  axios.delete('http://localhost:3000/api/notes/'+noteId)
   .then((res)=>{
     fetchNotes()
   })
