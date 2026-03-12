@@ -1,0 +1,42 @@
+1. Authentication
+
+Authentication is the process of verifying the identity of a user or system. It ensures that the person trying to access a system is actually who they claim to be.
+During authentication, the system checks the credentials provided by the user, such as username, email, password, OTP, or biometric data, and compares them with the stored data in the database. If the credentials match, the user is allowed to access the system.
+
+Examples:
+Login using username and password
+OTP-based login
+Fingerprint or face recognition
+
+
+2. Authorization
+
+Authorization is the process of determining what actions or resources a user is allowed to access after they have been authenticated.
+Once a user successfully logs in, the system checks the user’s role or permissions to decide what operations the user can perform within the system.
+
+Examples:
+An admin can create, edit, and delete data.
+A normal user can only view the data.
+
+
+3. Validation
+
+Validation is the process of checking whether the data entered by a user is correct, complete, and in the proper format before it is processed or stored in the system.
+Validation helps prevent incorrect or harmful data from entering the system.
+
+Examples:
+Checking if an email address is in the correct format (example@gmail.com)
+Ensuring a password has a minimum number of characters
+Verifying that a phone number contains the correct number of digits
+
+
+
+4. Verification
+
+Verification is the process of confirming the authenticity or truth of the information provided by a user. It usually involves an additional step to ensure that the information belongs to the user.
+Verification is commonly done through OTP codes, email links, or other confirmation methods.
+
+Examples:
+Email verification link
+Mobile OTP verification
+Two-factor authentication
