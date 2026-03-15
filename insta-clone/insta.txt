@@ -1,0 +1,16 @@
+Register (token,)
+login
+logout(token,blacklisting)
+( otp based Registeration)
+
+
+==> 
+post create
+saved
+can see the feed
+like post
+
+users ==> 
+
+followers
+following
