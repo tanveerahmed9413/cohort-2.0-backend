@@ -72,6 +72,18 @@ async function getPostDetailsContloller(req, res) {
   });
 }
 
+//  fetch all posts 
+
+async function getAllPosts(req,res){
+  
+  let allPost = await postModel.find()
+
+  return res.status(200).json({
+    message: "all post fetch successfully",
+    allPost
+
+  })
+}
 
 //  post like karna
 async function likePostController(req, res) {
@@ -101,5 +113,6 @@ module.exports = {
   postCreatreController,
   getPostController,
   getPostDetailsContloller,
+  getAllPosts,
   likePostController,
 };

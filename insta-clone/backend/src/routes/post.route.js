@@ -17,7 +17,11 @@ postRouter.post(
 
 // GET "api/posts"
 
-postRouter.get("/", identifyUser, postController.getPostController);
+postRouter.get(
+  "/", 
+  identifyUser, 
+  postController.getPostController
+);
 
 //  GET  "api/posts/details/:postId"
 
@@ -26,6 +30,13 @@ postRouter.get(
   identifyUser,
   postController.getPostDetailsContloller,
 );
+
+// GET "api/posts/allPost"
+postRouter.get(
+  "/allPost",
+  identifyUser,
+  postController.getAllPosts
+)
 
 // POST "api/posts/like/:postId"
 
