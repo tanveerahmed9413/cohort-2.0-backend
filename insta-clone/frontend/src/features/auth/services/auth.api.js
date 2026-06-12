@@ -25,10 +25,12 @@ export async function login(username, password) {
       username,
       password,
     });
+    
 
     return response.data;
   } catch (err) {
     console.log(err);
+    
   }
 }
 

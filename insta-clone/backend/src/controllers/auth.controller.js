@@ -108,7 +108,7 @@ async function getMeController(req, res) {
   res.status(200).json({
     user: {
       username: user.username,
-      email: user.email,
+      email: user.email,  
       bio: user.bio,
       profileImage: user.profileImage,
     },

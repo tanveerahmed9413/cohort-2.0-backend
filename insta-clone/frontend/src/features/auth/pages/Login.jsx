@@ -7,19 +7,30 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+
+ 
   const navigate = useNavigate();
 
   const { handleLogin, loading } = useAuth();
 
   if (loading) {
-    return <h1>Loading...</h1>;
+    return (
+       <main className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white px-8 py-6 rounded-2xl shadow-md text-center">
+        <div className="w-6 h-6 border-4 border-gray-300 border-t-black rounded-full animate-spin mx-auto"></div>
+        <p className="mt-3 font-medium">Loading...</p>
+      </div>
+    </main>
+    );
   }
 
   const submitHandler = (e) => {
     e.preventDefault();
 
     handleLogin(username, password).then((res) => {
-      console.log(res);
+  
+      console.log("LOGIN RESPONSE:", res);
+      localStorage.setItem("token", res.token);
       navigate("/");
     });
   };

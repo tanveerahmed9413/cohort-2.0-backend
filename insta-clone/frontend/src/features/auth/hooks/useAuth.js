@@ -16,6 +16,7 @@ export function useAuth(){
         setLoading(true)
         let response = await login(username,password)
         setUser(response.user)
+        return response
         setLoading(false)
     }
 

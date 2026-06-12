@@ -74,20 +74,35 @@ async function getPostDetailsContloller(req, res) {
 
 //  fetch all posts 
 
-async function getAllPosts(req,res){
-  
-  let allPost = await postModel.find()
+async function getAllPosts(req, res) {
+  const user = req.user;
+
+  const userLikes = await likeModel.find({
+    user: user.id
+  });
+
+
+  const likedPostIds = new Set(
+    userLikes.map(like => like.post.toString())
+  );
+
+  let allPost = (await postModel.find().populate('user').lean())
+    .map(post => {
+
+      post.isLiked = likedPostIds.has(post._id.toString());
+
+      return post;
+    });
 
   return res.status(200).json({
     message: "all post fetch successfully",
     allPost
-
-  })
+  });
 }
 
 //  post like karna
 async function likePostController(req, res) {
-  let userId = req.user.id;
+  let userId = req.user._id;
   let postId = req.params.postId;
 
   let post = await postModel.findById(postId);
@@ -97,6 +112,8 @@ async function likePostController(req, res) {
       message: "post not found",
     });
   }
+
+
 
   let like = await likeModel.create({
     user: userId,
