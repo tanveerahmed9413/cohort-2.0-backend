@@ -86,7 +86,7 @@ async function getAllPosts(req, res) {
     userLikes.map(like => like.post.toString())
   );
 
-  let allPost = (await postModel.find().populate('user').lean())
+  let allPost = (await postModel.find().populate('user').sort({ _id: -1 }).lean())
     .map(post => {
 
       post.isLiked = likedPostIds.has(post._id.toString());

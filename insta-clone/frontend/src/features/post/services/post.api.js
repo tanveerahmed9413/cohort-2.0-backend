@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: "http://localhost:3000/api/posts",
+    baseURL: "http://localhost:3000/api",
     withCredentials: true
 })
 
@@ -10,7 +10,7 @@ const api = axios.create({
 export async function getFeed() {
 
     try{
-        const response = await api.get("/allPost")
+        const response = await api.get("/posts/allPost")
         
         return response.data
     }
@@ -18,4 +18,15 @@ export async function getFeed() {
         console.log(err)
     }
     
+}
+
+export async function createPost(imageFile,caption) {
+    
+    let formData = new FormData()
+
+    formData.append('image',imageFile)
+    formData.append('caption',caption)
+
+    const response = await api.post("/posts",formData)
+    return response.data
 }

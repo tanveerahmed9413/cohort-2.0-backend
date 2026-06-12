@@ -4,6 +4,7 @@ import Signup from "./features/auth/pages/Signup";
 import Home from "./features/auth/pages/Home";
 import ProtectedRoute from "./features/post/components/ProtectedRoute";
 import FeedPage from "./features/post/pages/feedPage";
+import CreatePost from "./features/post/pages/CreatePost";
 
 const AppRoutes = () => {
   return (
@@ -15,6 +16,7 @@ const AppRoutes = () => {
           <Route path="/" element={<ProtectedRoute><FeedPage/></ProtectedRoute>} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/create-post" element={<CreatePost />} />
         </Routes>
       </BrowserRouter>
     </div>

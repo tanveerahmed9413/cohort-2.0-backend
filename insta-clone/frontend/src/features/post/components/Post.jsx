@@ -1,15 +1,15 @@
 import React from "react";
-import { Bookmark, CheckCircle,Heart,MessageCircle,Share2 } from "lucide-react";
+import { Bookmark, CircleCheck,Heart,MessageCircle,Share2 } from "lucide-react";
 import   "../shared/style.scss"
 
 const Post = ({ post }) => {
   console.log(post.isLiked);
   return (
-    <div className="w-[420px] rounded-3xl overflow-hidden bg-orange-900 border border-zinc-800 shadow-2xl">
+   <div className="w-[360px] rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-700 shadow-lg">
       {/* Header */}
-      <div className="flex items-center justify-between p-4">
+      <div className="flex items-center justify-between p-4 ">
         <div className="flex items-center gap-3">
-          <div className="p-[2px] rounded-full bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-600">
+         <div className="p-[2px] rounded-full bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500">
             <img
               className="h-14 w-14 rounded-full object-cover"
               src={post.user.profileImage}
@@ -21,7 +21,8 @@ const Post = ({ post }) => {
             <div className="flex items-center gap-1">
               <h2 className="font-bold text-white">{post.user.username}</h2>
 
-              <CheckCircle size={16} className="text-blue-500 fill-blue-500" />
+              <CircleCheck size={22} className="text-white-500 fill-blue-500" />
+              
             </div>
           </div>
         </div>
@@ -32,7 +33,7 @@ const Post = ({ post }) => {
       {/* Image */}
       <div className="overflow-hidden w-full">
         <img
-          className="w-full h-[450px] object-cover"
+          className="w-full h-[320px] object-cover"
           src={post.imageUrl}
           alt=""
         />
@@ -40,7 +41,7 @@ const Post = ({ post }) => {
 
       {/* Actions */}
       <div className="flex items-center justify-between px-4 py-3">
-        <div className="flex gap-5">
+        <div className="flex gap-5 text-zinc-300">
           {/* <Heart/> */}
           <Heart className={`cursor-pointer transition ${post.isLiked ? "like" : ""}`}/>
           <MessageCircle />
@@ -57,7 +58,7 @@ const Post = ({ post }) => {
 
       {/* Caption */}
       <div className="px-4 py-3">
-        <p className="text-zinc-300">{post.caption}</p>
+        <p className="text-zinc-400 text-sm">{post.caption}</p>
       </div>
     </div>
   );

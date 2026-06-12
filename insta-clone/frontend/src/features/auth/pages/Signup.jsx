@@ -45,6 +45,7 @@ if (loading) {
             className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black"
             onChange={(e) => setUsername(e.target.value)}
             value={username}
+            required
           />
 
           <input
@@ -53,6 +54,7 @@ if (loading) {
             className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black"
             onChange={(e) => setEmail(e.target.value)}
             value={email}
+            required
           />
 
           <input
@@ -61,6 +63,7 @@ if (loading) {
             className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-black"
             onChange={(e) => setPassword(e.target.value)}
             value={password}
+            required
           />
 
           {/* Button */}
