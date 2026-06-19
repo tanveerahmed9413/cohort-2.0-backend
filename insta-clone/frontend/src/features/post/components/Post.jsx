@@ -1,9 +1,15 @@
 import React from "react";
 import { Bookmark, CircleCheck,Heart,MessageCircle,Share2 } from "lucide-react";
 import   "../shared/style.scss"
+import { getFeed } from "../services/post.api";
+import { usePost } from "../hooks/usePost";
+
 
 const Post = ({ post }) => {
-  console.log(post.isLiked);
+  
+const {handleLikePost,handleUnlikePost} = usePost()
+
+
   return (
    <div className="w-[360px] rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-700 shadow-lg">
       {/* Header */}
@@ -43,7 +49,13 @@ const Post = ({ post }) => {
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex gap-5 text-zinc-300">
           {/* <Heart/> */}
-          <Heart className={`cursor-pointer transition ${post.isLiked ? "like" : ""}`}/>
+          <Heart onClick={()=>{
+            if(post.isLiked){
+              handleUnlikePost(post._id)
+            }else{
+              handleLikePost(post._id)
+            }
+          }} className={`cursor-pointer transition ${post.isLiked ? "like" : "unlike"}`}/>
           <MessageCircle />
           <Share2 />
         </div>

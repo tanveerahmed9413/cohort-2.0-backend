@@ -11,18 +11,18 @@ const identifyUser = require("../middlewares/auth.middleware");
 postRouter.post("/",upload.single("image"), identifyUser,postController.postCreatreController,);
 
 // GET "api/posts"
-
 postRouter.get("/",  identifyUser,  postController.getPostController);
 
 //  GET  "api/posts/details/:postId"
-
 postRouter.get("/details/:postId", identifyUser, postController.getPostDetailsContloller,);
 
 // GET "api/posts/allPost"
 postRouter.get("/allPost",identifyUser,postController.getAllPosts)
 
 // POST "api/posts/like/:postId"
-
 postRouter.post( "/like/:postId", identifyUser,postController.likePostController,);
+
+// POST "api/posts/unlike/:postId"
+postRouter.delete( "/unlike/:postId", identifyUser,postController.unLikePostController,);
 
 module.exports = postRouter;

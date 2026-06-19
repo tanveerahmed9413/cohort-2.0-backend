@@ -1,32 +1,37 @@
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
-    baseURL: "http://localhost:3000/api",
-    withCredentials: true
-})
-
-
+  baseURL: "http://localhost:3000/api",
+  withCredentials: true,
+});
 
 export async function getFeed() {
+  try {
+    const response = await api.get("/posts/allPost");
 
-    try{
-        const response = await api.get("/posts/allPost")
-        
-        return response.data
-    }
-    catch(err){
-        console.log(err)
-    }
-    
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
 }
 
-export async function createPost(imageFile,caption) {
-    
-    let formData = new FormData()
+export async function createPost(imageFile, caption) {
+  let formData = new FormData();
 
-    formData.append('image',imageFile)
-    formData.append('caption',caption)
+  formData.append("image", imageFile);
+  formData.append("caption", caption);
 
-    const response = await api.post("/posts",formData)
-    return response.data
+  const response = await api.post("/posts", formData);
+  return response.data;
+}
+
+export async function likePost(postId) {
+  
+  let response = await api.post("/posts/like/" + postId);
+  return response.data;
+}
+
+export async function unLikePost(postId) {
+  let response = await api.delete("/posts/unlike/" + postId);
+  return response.data;
 }

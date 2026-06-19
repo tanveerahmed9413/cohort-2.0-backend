@@ -1,5 +1,5 @@
 import {  useContext, useEffect } from "react";
-import { getFeed , createPost } from "../services/post.api";
+import { getFeed , createPost,likePost,unLikePost } from "../services/post.api";
 import {PostContext} from "../post.context"
 
 
@@ -13,6 +13,7 @@ export  function usePost() {
         setLoading(true)
         let data = await getFeed()
         setFeed(data.allPost)
+        console.log("🔥 FEED API CALLED");
         setLoading(false)
     }
 
@@ -23,9 +24,17 @@ export  function usePost() {
         setLoading(false)
         
     }
+    let handleLikePost = async(postId)=>{
+        let data = await likePost(postId)
+       await handleGetFeed()
+    }
+    let handleUnlikePost = async(postId)=>{
+        let data = await unLikePost(postId)
+       await handleGetFeed()
+    }
    
 
     return (
-        {loading,feed,post,handleGetFeed,handleCreatePost}
+        {loading,feed,post,handleGetFeed,handleCreatePost,handleLikePost,handleUnlikePost}
     )
 }

@@ -102,7 +102,7 @@ async function getAllPosts(req, res) {
 
 //  post like karna
 async function likePostController(req, res) {
-  let userId = req.user._id;
+  let userId = req.user.id;
   let postId = req.params.postId;
 
   let post = await postModel.findById(postId);
@@ -113,6 +113,16 @@ async function likePostController(req, res) {
     });
   }
 
+  let isLiked = await likeModel.findOne({
+    user: userId,
+    post: postId
+  })
+
+  if(isLiked){
+    return res.status(400).json({
+      message: "post already liked"
+    })
+  }
 
 
   let like = await likeModel.create({
@@ -126,10 +136,35 @@ async function likePostController(req, res) {
   });
 }
 
+// post unLike karna
+async function unLikePostController(req,res){
+   let userId = req.user.id;
+  let postId = req.params.postId;
+
+  let isLiked = await likeModel.findOne({
+    post: postId,
+    user: userId
+  })
+
+  
+  if(!isLiked){
+   return res.status(400).json({
+      message: "post did not like ",
+    })
+  }
+
+   await likeModel.findByIdAndDelete(isLiked._id)
+
+    return res.status(200).json({
+      message: 'post unLike successfully',
+    })
+}
+
 module.exports = {
   postCreatreController,
   getPostController,
   getPostDetailsContloller,
   getAllPosts,
   likePostController,
+  unLikePostController,
 };
