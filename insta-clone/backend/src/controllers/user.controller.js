@@ -2,7 +2,7 @@
 const followModel = require('../models/follow.model')
 const userModel = require('../models/user.model')
 
-
+// Follow Controller
 async function followUserController(req,res) {
     let followerUsername = req.user.username;
     let followingUsername=  req.params.username;
@@ -52,7 +52,7 @@ if(isAlreadyFollwing){
 }
 
 
-
+//  unFollow Controller
 async function unfollowUserController(req,res){
       let followerUsername = req.user.username
       let followingUsername = req.params.username
@@ -77,7 +77,57 @@ async function unfollowUserController(req,res){
       })
 }
 
+// Following List Controller
+async function getFollowingListController(req,res){
+    let currentUser = req.user.username
+
+
+    let followingRecord = await followModel.find({
+        follower: currentUser
+    })
+
+    let usernames = await followingRecord.map(
+        item => item.following
+    )
+
+    let user = await userModel.find({
+        username: { $in: usernames}
+    })
+
+    res.status(200).json({
+        message: 'find following list',
+        user
+    })
+    
+}
+
+// Follower List Controller
+async function getFollowerListController(req,res) {
+    let currentUser = req.user.username
+
+    let followerRecord = await followModel.find({
+        following: currentUser
+    })
+
+    let usernames = await followerRecord.map(
+        item => item.follower
+    )
+
+    let user = await userModel.find({
+        username: { $in: usernames}
+    })
+
+    res.status(200).json({
+        message: "find follower list",
+        user
+    })
+
+
+}
+
 module.exports = {
     followUserController,
-    unfollowUserController
+    unfollowUserController,
+    getFollowingListController,
+    getFollowerListController,
 }

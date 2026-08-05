@@ -10,11 +10,10 @@ export  function usePost() {
    let {loading,setLoading,post,setPost,setFeed,feed} = context
 
     let handleGetFeed = async()=>{
-        setLoading(true)
+        // setLoading(true)
         let data = await getFeed()
         setFeed(data.allPost)
-        console.log("🔥 FEED API CALLED");
-        setLoading(false)
+        //  setLoading(false)
     }
 
     let handleCreatePost = async(imageFile,caption)=>{
@@ -35,6 +34,6 @@ export  function usePost() {
    
 
     return (
-        {loading,feed,post,handleGetFeed,handleCreatePost,handleLikePost,handleUnlikePost}
+        {loading,setLoading,feed,post,handleGetFeed,handleCreatePost,handleLikePost,handleUnlikePost}
     )
 }

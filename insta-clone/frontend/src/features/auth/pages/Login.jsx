@@ -31,6 +31,7 @@ const Login = () => {
   
       console.log("LOGIN RESPONSE:", res);
       localStorage.setItem("token", res.token);
+      console.log(res.token)
       navigate("/");
     });
   };

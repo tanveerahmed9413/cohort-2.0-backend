@@ -52,7 +52,9 @@ authRouter.post("/login", async (req, res) => {
     });
   }
 
-  let isPasswordMatch = user.password === crypto.createHash('md5').update(password).digest('hex');
+  let hashPassword = crypto.createHash('sha256').update(password).digest('hex')
+
+  let isPasswordMatch = user.password === hashPassword
 
   if (!isPasswordMatch) {
     return res.status(401).json({

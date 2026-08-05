@@ -2,12 +2,19 @@ import React, { useEffect } from "react";
 import Post from "../components/Post";
 import { usePost } from "../hooks/usePost";
 import Navbaar from "../components/Navbaar";
-import Profile from "../components/Profile";
+import Profile from "../components/Sidebar";
+// import FollowingList from "../../follow/pages/FollowingList";
+
 
 const FeedPage = () => {
-  let { handleGetFeed, loading, feed } = usePost();
+  let { handleGetFeed, loading,setLoading, feed } = usePost();
 
   useEffect(() => {
+    let loadFeed = () =>{
+      setLoading()
+       handleGetFeed()
+      setLoading(false)
+    }
     handleGetFeed();
   }, []);
 
@@ -26,16 +33,17 @@ const FeedPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto flex gap-6 ">
-      <div className="w-[30%] left-sidebar  py-4 px-3 fixed ">
-        <Profile />
-      </div>
-      <div className="w-[70%] right-sidebar p-6  items-center ml-[30%]">
+      {/* <div className="w-[25%] left-sidebar  py-4 px-3 fixed ">
+        <FollowingList />
+      </div> */}
+      <div className="w-full right-sidebar p-6  items-center">
         <div className="navbar w-full flex justify-between">
           <Navbaar />
         </div>
-        <div className="feed-page grid grid-cols-2  min-h-screen items-center gap-6 py-2">
+        <div className="feed-page grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 min-h-screen items-center gap-6 py-2">
           {feed.map((post) => {
-            return <Post key={post._id} post={post} />;
+            return <Post key={post._id} post={post}/> ;
+            
           })}
         </div>
       </div>
