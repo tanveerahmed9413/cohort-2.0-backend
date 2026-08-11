@@ -61,8 +61,6 @@ async function uploadSong(req, res) {
 
 async function getSongs(req,res){
     let songs = await songModel.find()
-
-    console.log(songs)
     return res.status(200).json({
         message: "song fetched successfully",
         songs
