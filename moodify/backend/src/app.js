@@ -1,26 +1,35 @@
-
 const express = require("express");
-const cookeiParser = require("cookie-parser")
-const cors = require("cors")
-
-
+const cookieParser = require("cookie-parser");
+const cors = require("cors");
+const path = require("path");
 
 const app = express();
-app.use(express.json())
-app.use(cookeiParser())
-app.use(cors({
+
+app.use(express.json());
+app.use(cookieParser());
+
+app.use(
+  cors({
     origin: "http://localhost:5173",
-    credentials: true
-}))
+    credentials: true,
+  }),
+);
 
+// ================= API ROUTES =================
 
+const authRoutes = require("./routes/auth.routes");
+const songRoutes = require("./routes/song.routes");
 
+app.use("/api/auth", authRoutes);
+app.use("/api/songs", songRoutes);
 
-const  authRoutes = require("./routes/auth.routes")
-const songRoutes = require("./routes/song.routes")
+// ================= FRONTEND =================
 
-app.use("/api/auth",authRoutes)
-app.use("/api/songs",songRoutes)
+app.use(express.static(path.join(__dirname, "public")));
 
+// React Router fallback
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 
 module.exports = app;
