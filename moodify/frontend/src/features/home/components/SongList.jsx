@@ -3,7 +3,7 @@ import SongCard from "./SongCard";
 import { useHome } from "../hook/useHome";
 
 const SongList = () => {
-  const { songs, getSongs, loading } = useHome();
+  const { songs, getSongs, loading, playSong, index } = useHome();
 
   useEffect(() => {
     getSongs();
@@ -26,14 +26,12 @@ const SongList = () => {
   }
 
   return (
-    <div>
-      {songs.map((song) => (
+    <div className="flex flex-col gap-2">
+      {songs.map((song, index) => (
         <SongCard
           key={song._id}
-          songUrl={song.songUrl}
-          posterUrl={song.posterUrl}
-          title={song.title}
-          mood={song.mood}
+          song={song}
+          onPlay={() => playSong(song, index)}
         />
       ))}
     </div>

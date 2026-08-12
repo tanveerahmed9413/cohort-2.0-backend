@@ -1,49 +1,267 @@
-import { SkipBack, SkipForward, Pause, Play, Volume2 } from "lucide-react";
+import { SkipBack, SkipForward, Pause, Play } from "lucide-react";
 
-const BottomPlayer = ({
-  isPlaying = true,
-  currentTime = "1:08",
-  duration = "3:20",
-}) => {
+import { useEffect, useRef, useState } from "react";
+
+import { useHome } from "../../features/home/hook/useHome";
+
+// =========================
+// FORMAT TIME
+// =========================
+
+const formatTime = (time) => {
+  if (!time || isNaN(time)) {
+    return "0:00";
+  }
+
+  const minutes = Math.floor(time / 60);
+
+  const seconds = Math.floor(time % 60)
+    .toString()
+    .padStart(2, "0");
+
+  return `${minutes}:${seconds}`;
+};
+
+const BottomPlayer = () => {
+  const { currentSong, nextSong, previousSong } = useHome();
+
+  const audioRef = useRef(null);
+
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const [currentTime, setCurrentTime] = useState(0);
+
+  const [duration, setDuration] = useState(0);
+
+  // =========================
+  // CURRENT SONG CHANGE
+  // =========================
+
+useEffect(() => {
+  if (!currentSong) return;
+
+  const audio = audioRef.current;
+
+  if (!audio) return;
+
+  audio.pause();
+
+  audio.src = currentSong.songUrl;
+
+  audio.load();
+
+  setCurrentTime(0);
+  setDuration(0);
+
+  // Song select hone ke baad autoplay
+  audio
+    .play()
+    .then(() => {
+      setIsPlaying(true);
+    })
+    .catch((error) => {
+      console.log("Autoplay blocked:", error);
+
+      setIsPlaying(false);
+    });
+}, [currentSong]);
+
+  // =========================
+  // AUDIO EVENTS
+  // =========================
+
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    if (!audio) return;
+
+    const handleTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
+    };
+
+    const handleLoadedMetadata = () => {
+      setDuration(audio.duration);
+    };
+
+    const handleEnded = () => {
+      setIsPlaying(false);
+
+      // Automatically next song
+      nextSong();
+    };
+
+    audio.addEventListener("timeupdate", handleTimeUpdate);
+
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+
+    audio.addEventListener("ended", handleEnded);
+
+    return () => {
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
+
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, [nextSong]);
+
+  // =========================
+  // PLAY / PAUSE
+  // =========================
+
+  const togglePlay = () => {
+    const audio = audioRef.current;
+
+    if (!audio || !currentSong) return;
+
+    if (audio.paused) {
+      audio.play().then(() => {
+        setIsPlaying(true);
+      });
+    } else {
+      audio.pause();
+
+      setIsPlaying(false);
+    }
+  };
+
+  // =========================
+  // NO SONG
+  // =========================
+
+  if (!currentSong) {
+    return null;
+  }
+
   return (
-    <div className="w-full  bottom-3 left-3 right-3 z-50 rounded-2xl border border-violet-500/30 bg-[#0b101c]/95 backdrop-blur-xl shadow-[0_0_40px_rgba(79,70,229,0.12)] text-white">
-      {/* ================= DESKTOP PLAYER ================= */}
+    <div
+      className="
+        fixed
+        bottom-3
+        left-3
+        right-3
+
+        lg:left-[260px]
+
+        z-50
+
+        rounded-2xl
+
+        border
+        border-violet-500/30
+
+        bg-[#0b101c]/95
+
+        backdrop-blur-xl
+
+        shadow-[0_0_40px_rgba(79,70,229,0.12)]
+
+        text-white
+      "
+    >
+      {/* REAL AUDIO */}
+
+      <audio ref={audioRef} />
+
+      {/* ========================= */}
+      {/* DESKTOP */}
+      {/* ========================= */}
+
       <div
-        className="  hidden lg:flex h-[138px] items-center  gap-6 px-10
+        className="
+          hidden
+          lg:flex
+
+          h-[138px]
+
+          items-center
+          gap-6
+          px-10
         "
       >
-        {/* Album + Song Info */}
-        <div className="flex items-center gap-6 min-w-[300px]">
+        {/* SONG INFO */}
+
+        <div
+          className="
+            flex
+            items-center
+            gap-5
+
+            min-w-[300px]
+          "
+        >
           <img
-            src="https://images.unsplash.com/photo-1786130938332-7a77765427af?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyMXx8fGVufDB8fHx8fA%3D%3D"
-            alt="song image"
+            src={currentSong.posterUrl}
+            alt={currentSong.title}
             className="
               w-[82px]
               h-[82px]
+
               rounded-xl
               object-cover
             "
           />
 
-          <div>
-            <h3 className="text-[18px] font-semibold">Blinding Lights</h3>
+          <div className="min-w-0">
+            <h3
+              className="
+                text-[18px]
+                font-semibold
+                truncate
+              "
+            >
+              {currentSong.title}
+            </h3>
 
-            <p className="text-gray-400 mt-1">The Weeknd</p>
+            <p
+              className="
+                text-gray-400
+                mt-1
+                capitalize
+              "
+            >
+              {currentSong.mood || "Unknown mood"}
+            </p>
           </div>
         </div>
 
-        {/* Center Controls */}
-        <div className="flex-1 flex flex-col items-center gap-5">
+        {/* CENTER */}
+
+        <div
+          className="
+            flex-1
+
+            flex
+            flex-col
+            items-center
+
+            gap-5
+          "
+        >
+          {/* CONTROLS */}
+
           <div className="flex items-center gap-8">
-            <button className="text-white">
+            {/* PREVIOUS */}
+
+            <button
+              onClick={previousSong}
+              className="
+                text-white
+                hover:text-violet-400
+                transition
+              "
+            >
               <SkipBack size={24} fill="currentColor" />
             </button>
 
-            {/* Play */}
+            {/* PLAY / PAUSE */}
+
             <button
+              onClick={togglePlay}
               className="
                 w-[68px]
                 h-[68px]
+
                 rounded-full
 
                 flex
@@ -55,6 +273,7 @@ const BottomPlayer = ({
                 shadow-[0_0_30px_rgba(124,58,237,0.55)]
 
                 hover:bg-violet-500
+
                 transition
               "
             >
@@ -65,87 +284,194 @@ const BottomPlayer = ({
               )}
             </button>
 
-            <button className="text-white">
+            {/* NEXT */}
+
+            <button
+              onClick={nextSong}
+              className="
+                text-white
+                hover:text-violet-400
+                transition
+              "
+            >
               <SkipForward size={24} fill="currentColor" />
             </button>
           </div>
 
-          {/* Progress */}
-          <div className="flex items-center gap-3 w-full max-w-[550px]">
-            <span className="text-xs text-gray-400">{currentTime}</span>
+          {/* PROGRESS */}
 
-            <div className="relative flex-1 h-1.5 rounded-full bg-white/[0.08]">
-              <div className="  absolute   left-0   top-0 h-full   w-[35%] rounded-full bg-violet-500  " />
+          <div
+            className="
+              flex
+              items-center
+              gap-3
 
-              <div className=" absolute left-[35%] top-1/2 -translate-y-1/2  w-3 h-3 rounded-full  bg-white " />
-            </div>
+              w-full
+              max-w-[550px]
+            "
+          >
+            <span className="text-xs text-gray-400">
+              {formatTime(currentTime)}
+            </span>
 
-            <span className="text-xs text-gray-400">{duration}</span>
-          </div>
-        </div>
+            <input
+              type="range"
+              min="0"
+              max={duration || 0}
+              value={currentTime}
+              onChange={(e) => {
+                const time = Number(e.target.value);
 
-        {/* Volume + Queue */}
-        <div className="flex items-center gap-7 min-w-[240px] justify-end">
-          <div className="flex items-center gap-3">
-            <Volume2 size={21} className="text-gray-300" />
+                audioRef.current.currentTime = time;
 
-            <div className="w-[120px] h-1.5 rounded-full bg-white/[0.08]">
-              <div className="w-[75%] h-full rounded-full bg-violet-500" />
-            </div>
+                setCurrentTime(time);
+              }}
+              className="
+                flex-1
+                accent-violet-500
+              "
+            />
+
+            <span className="text-xs text-gray-400">
+              {formatTime(duration)}
+            </span>
           </div>
         </div>
       </div>
 
-      {/* ================= MOBILE / TABLET ================= */}
-      <div className=" lg:hidden  px-4  py-3">
-        {/* Top Row */}
+      {/* ========================= */}
+      {/* MOBILE / TABLET */}
+      {/* ========================= */}
+
+      <div
+        className="
+          lg:hidden
+
+          px-4
+          py-3
+        "
+      >
         <div className="flex items-center gap-3">
-          {/* Album */}
+          {/* IMAGE */}
+
           <img
-            src="https://images.unsplash.com/photo-1786130938332-7a77765427af?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwyMXx8fGVufDB8fHx8fA%3D%3D"
-            alt="song image"
-            className="   w-[52px] h-[52px]  rounded-lg  object-cover   flex-shrink-0  "
+            src={currentSong.posterUrl}
+            alt={currentSong.title}
+            className="
+              w-[52px]
+              h-[52px]
+
+              rounded-lg
+
+              object-cover
+
+              flex-shrink-0
+            "
           />
 
-          {/* Song */}
-          <div className="flex-1 min-w-0">
-            <h3 className=" text-[14px] font-semibold  truncate">
-              Blinding Lights
+          {/* INFO */}
+
+          <div
+            className="
+              flex-1
+              min-w-0
+            "
+          >
+            <h3
+              className="
+                text-[14px]
+                font-semibold
+                truncate
+              "
+            >
+              {currentSong.title}
             </h3>
 
-            <p className=" text-xs  text-gray-400 mt-0.5 truncate">
-              The Weeknd
+            <p
+              className="
+                text-xs
+                text-gray-400
+                mt-0.5
+                truncate
+                capitalize
+              "
+            >
+              {currentSong.mood || "Unknown mood"}
             </p>
           </div>
 
-          {/* Play */}
-          <button className=" w-10 h-10 rounded-full flex  items-center justify-center  bg-violet-600  shadow-[0_0_20px_rgba(124,58,237,0.45)]  ">
+          {/* PREVIOUS */}
+
+          <button onClick={previousSong} className="text-gray-300">
+            <SkipBack size={18} />
+          </button>
+
+          {/* PLAY */}
+
+          <button
+            onClick={togglePlay}
+            className="
+              w-10
+              h-10
+
+              rounded-full
+
+              flex
+              items-center
+              justify-center
+
+              bg-violet-600
+            "
+          >
             {isPlaying ? (
               <Pause size={18} fill="white" />
             ) : (
               <Play size={18} fill="white" />
             )}
           </button>
+
+          {/* NEXT */}
+
+          <button onClick={nextSong} className="text-gray-300">
+            <SkipForward size={18} />
+          </button>
         </div>
 
-        {/* Mobile Progress */}
-        <div className="mt-3 flex items-center gap-2">
-          <span className="text-[10px] text-gray-500">{currentTime}</span>
+        {/* MOBILE PROGRESS */}
 
-          <div className="relative flex-1 h-1 rounded-full bg-white/[0.08]">
-            <div className="absolute  left-0  top-0  h-full  w-[35%] rounded-full bg-violet-500 " />
-          </div>
+        <div
+          className="
+            mt-3
+            flex
+            items-center
+            gap-2
+          "
+        >
+          <span className="text-[10px] text-gray-500">
+            {formatTime(currentTime)}
+          </span>
 
-          <span className="text-[10px] text-gray-500">{duration}</span>
-        </div>
+          <input
+            type="range"
+            min="0"
+            max={duration || 0}
+            value={currentTime}
+            onChange={(e) => {
+              const time = Number(e.target.value);
 
-        {/* Tablet Controls */}
-        <div className=" flex  items-center justify-center gap-8 mt-3">
-          <SkipBack size={20} fill="currentColor" />
+              audioRef.current.currentTime = time;
 
-          <SkipForward size={20} fill="currentColor" />
+              setCurrentTime(time);
+            }}
+            className="
+              flex-1
+              accent-violet-500
+            "
+          />
 
-          <Volume2 size={18} className="text-gray-400" />
+          <span className="text-[10px] text-gray-500">
+            {formatTime(duration)}
+          </span>
         </div>
       </div>
     </div>

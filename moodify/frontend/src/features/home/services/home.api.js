@@ -9,7 +9,6 @@ const api = axios.create({
 
  export async function getAllSongs() {
     const response = await api.get("/api/songs")
-    console.log(response)
     return response.data.songs
 }
 
