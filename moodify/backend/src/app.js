@@ -23,7 +23,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/songs", songRoutes);
 
 // React frontend
-const publicPath = path.join(__dirname, "../public");
+const publicPath = path.join(__dirname, "../public/dist");
 
 app.use(express.static(publicPath));
 
