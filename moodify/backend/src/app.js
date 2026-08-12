@@ -10,9 +10,11 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: [
+      "http://localhost:5173",
+    ],
     credentials: true,
-  }),
+  })
 );
 
 // ================= API ROUTES =================
@@ -23,12 +25,11 @@ const songRoutes = require("./routes/song.routes");
 app.use("/api/auth", authRoutes);
 app.use("/api/songs", songRoutes);
 
-// ================= FRONTEND =================
+// ================= REACT FRONTEND =================
 
 app.use(express.static(path.join(__dirname, "public")));
 
-// React Router fallback
-app.get("*", (req, res) => {
+app.get("/*splat", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
