@@ -1,7 +1,7 @@
 import axios from "axios"
 
 let api = axios.create({
-    baseURL: "https://moodify-h9nd.onrender.com",
+    baseURL: "http://localhost:3000",
     withCredentials: true
 })
 

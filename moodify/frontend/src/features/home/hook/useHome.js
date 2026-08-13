@@ -1,11 +1,12 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import { HomeContext } from "../home.context";
-import { getAllSongs } from "../services/home.api";
+import { getAllSongs, songUpload, getSongsByMood } from "../services/home.api";
 
 export const useHome = () => {
   const context = useContext(HomeContext);
-
+  const [uploadLoading, setUploadLoading] = useState(false);
+  const [moodLoading, setMoodLoading] = useState(false)
   if (!context) {
     throw new Error("useHome must be used inside HomeProvider");
   }
@@ -22,11 +23,15 @@ export const useHome = () => {
 
     currentIndex,
     setCurrentIndex,
+
+    uploadedSong,
+    setUploadedSong,
+    
+    mood,
+    setMood
   } = context;
 
-  // =========================
   // GET ALL SONGS
-  // =========================
 
   const getSongs = async () => {
     try {
@@ -41,6 +46,38 @@ export const useHome = () => {
       console.error("Get songs error:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleGetSongsByMood = async (detectedMood) => {
+  try {
+    console.log("[handleGetSongsByMood] called with:", detectedMood);
+    setMoodLoading(true);
+    setMood(detectedMood);
+
+    const data = await getSongsByMood(detectedMood);
+    console.log("[handleGetSongsByMood] API response:", data);
+
+    setSongs(data);
+  } catch (error) {
+    console.error("[handleGetSongsByMood] Failed to get mood songs:", error);
+    setSongs([]);
+  } finally {
+    setMoodLoading(false);
+  }
+};
+
+  const handleUploadSong = async (formData) => {
+    try {
+      setUploadLoading(true);
+      const response = await songUpload(formData);
+      setUploadedSong(response.song);
+      setSongs((prev) => [...prev, response.song]);
+      return response;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setUploadLoading(false);
     }
   };
 
@@ -96,5 +133,12 @@ export const useHome = () => {
     playSong,
     nextSong,
     previousSong,
+
+    handleUploadSong,
+    uploadLoading,
+
+    mood,
+    moodLoading,
+    handleGetSongsByMood
   };
 };

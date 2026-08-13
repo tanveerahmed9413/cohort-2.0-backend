@@ -1,4 +1,5 @@
 import { Home, Smile } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   return (
@@ -29,8 +30,9 @@ const Sidebar = () => {
 
       {/* Navigation */}
       <nav>
-        <div
-          className="
+        <Link to="/">
+          <div
+            className="
             flex items-center gap-4
             h-[54px]
             px-4
@@ -40,11 +42,12 @@ const Sidebar = () => {
             shadow-[0_8px_30px_rgba(109,40,217,0.18)]
             text-violet-200 cursor-pointer
           "
-        >
-          <Home size={22} strokeWidth={1.8} className="text-violet-200" />
+          >
+            <Home size={22} strokeWidth={1.8} className="text-violet-200" />
 
-          <span className="text-[16px] font-medium">Home</span>
-        </div>
+            <span className="text-[16px] font-medium">Home</span>
+          </div>
+        </Link>
       </nav>
 
       {/* Spacer */}

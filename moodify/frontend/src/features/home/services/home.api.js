@@ -1,17 +1,24 @@
-import axios from "axios"
+import axios from "axios";
 
 const api = axios.create({
-    baseURL: "https://moodify-h9nd.onrender.com",
-    withCredentials: true
-})
+  baseURL: "http://localhost:3000",
+  withCredentials: true,
+});
 
-
-
- export async function getAllSongs() {
-    const response = await api.get("/api/songs")
-    return response.data.songs
+export async function getAllSongs() {
+  const response = await api.get("/api/songs");
+  return response.data.songs;
 }
 
+export const getSongsByMood = async (mood) => {
+  const response = await api.get(`/api/songs/mood/${mood}`);
+  console.log(response.data.songs)
+  return response.data.songs;
+};
 
-
-
+export async function songUpload(songFile) {
+  const formData = new FormData();
+  formData.append("song", songFile);
+  const response = await api.post("/api/songs/upload", formData);
+  return response.data;
+}

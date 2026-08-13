@@ -6,6 +6,7 @@ import ProtectedRoute from "./features/auth/components/ProtectedRoute";
 import MainLayout from "./components/layout/MainLayout";
 import Home from "./features/home/pages/Home";
 
+
 const AppRoutes = () => {
   return (
     <div>
@@ -16,6 +17,7 @@ const AppRoutes = () => {
           <Route element={<ProtectedRoute />}>
             <Route element={<MainLayout />}>
               <Route index element={<Home />} />
+              
             </Route>
             <Route path="*" element={<h3>Not Found</h3>} />
           </Route>
