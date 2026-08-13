@@ -59,13 +59,27 @@ async function uploadSong(req, res) {
   }
 }
 
-async function getSongs(req,res){
-    let songs = await songModel.find()
-    return res.status(200).json({
-        message: "song fetched successfully",
-        songs
-    })
- 
+async function getSongs(req, res) {
+  let songs = await songModel.find();
+  return res.status(200).json({
+    message: "song fetched successfully",
+    songs,
+  });
 }
 
-module.exports = { uploadSong,getSongs };
+async function getSongsByMood(req, res) {
+  const { mood } = req.params;
+
+  const songs = await songModel.find({
+    mood: mood.toLowerCase()
+  })
+
+  return res.status(200).json({
+    message: "success to fetch mood songs",
+    mood,
+    songs
+  })
+
+}
+
+module.exports = { uploadSong, getSongs,getSongsByMood };

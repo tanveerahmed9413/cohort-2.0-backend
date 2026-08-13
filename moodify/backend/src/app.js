@@ -1,7 +1,7 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const path = require("path");
+// const path = require("path");
 
 const app = express();
 
@@ -10,7 +10,7 @@ app.use(cookieParser());
 
 app.use(
     cors({
-        origin: "https://moodify-uy1c.onrender.com",
+        origin: "http://localhost:5173",
         credentials: true,
     })
 );
@@ -23,13 +23,13 @@ app.use("/api/auth", authRoutes);
 app.use("/api/songs", songRoutes);
 
 // React frontend
-const publicPath = path.join(__dirname, "../public/dist");
+// const publicPath = path.join(__dirname, "../public/dist");
 
-app.use(express.static(publicPath));
+// app.use(express.static(publicPath));
 
 // React Router fallback — Express 5
-app.get("/{*splat}", (req, res) => {
-    res.sendFile(path.join(publicPath, "index.html"));
-});
+// app.get("/{*splat}", (req, res) => {
+//     res.sendFile(path.join(publicPath, "index.html"));
+// });
 
 module.exports = app;
