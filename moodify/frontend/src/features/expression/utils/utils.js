@@ -42,34 +42,35 @@ export const detect = ({
 
     const smileLeft = getScore("mouthSmileLeft");
     const smileRight = getScore("mouthSmileRight");
+
     const jawOpen = getScore("jawOpen");
     const browUp = getScore("browInnerUp");
+
     const frownLeft = getScore("mouthFrownLeft");
     const frownRight = getScore("mouthFrownRight");
+
+    const browDownLeft = getScore("browDownLeft");
+    const browDownRight = getScore("browDownRight");
+
+    const smile = (smileLeft + smileRight) / 2;
+    const frown = (frownLeft + frownRight) / 2;
+    const browDown = (browDownLeft + browDownRight) / 2;
 
     let currentExpression = "neutral";
     let mood = "neutral";
 
-    if (smileLeft > 0.5 && smileRight > 0.5) {
+    if (smile > 0.35) {
       currentExpression = "happy";
       mood = "happy";
     } else if (jawOpen > 0.2 && browUp > 0.2) {
       currentExpression = "surprised";
       mood = "surprised";
-    } else if (frownLeft > 0.01 && frownRight > 0.01) {
+    } else if (frown > 0.03 || browDown > 0.25) {
       currentExpression = "sad";
       mood = "sad";
     }
 
     setExpression(currentExpression);
-    console.log(
-      "[detect] currentExpression:",
-      currentExpression,
-      "mood:",
-      mood,
-      "onMoodDetected exists?",
-      !!onMoodDetected,
-    );
     if (onMoodDetected) {
       onMoodDetected(mood);
     }

@@ -7,7 +7,7 @@ const TopBar = () => {
   const [showUploadModel, setShowUploadModel] = useState(false);
   const [mobileSidebar, setMobileSidebar] = useState(false);
   return (
-    <header className=" w-full px-5  py-5 lg:px-8 lg:py-7 border-b border-white/[0.05] bg-[#080c14] ">
+    <header className=" w-full px-5  py-5 lg:px-8 lg:py-5 border-b border-white/[0.05] bg-[#080c14] ">
       <div className=" flex   items-center justify-between gap-4 ">
         {/* Search */}
         <div className=" relative flex-1 max-w-[520px]">

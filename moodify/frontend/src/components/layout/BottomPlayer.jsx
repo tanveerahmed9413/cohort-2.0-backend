@@ -1,7 +1,5 @@
 import { SkipBack, SkipForward, Pause, Play } from "lucide-react";
-
 import { useEffect, useRef, useState } from "react";
-
 import { useHome } from "../../features/home/hook/useHome";
 
 // =========================
@@ -37,34 +35,34 @@ const BottomPlayer = () => {
   // CURRENT SONG CHANGE
   // =========================
 
-useEffect(() => {
-  if (!currentSong) return;
+  useEffect(() => {
+    if (!currentSong) return;
 
-  const audio = audioRef.current;
+    const audio = audioRef.current;
 
-  if (!audio) return;
+    if (!audio) return;
 
-  audio.pause();
+    audio.pause();
 
-  audio.src = currentSong.songUrl;
+    audio.src = currentSong.songUrl;
 
-  audio.load();
+    audio.load();
 
-  setCurrentTime(0);
-  setDuration(0);
+    setCurrentTime(0);
+    setDuration(0);
 
-  // Song select hone ke baad autoplay
-  audio
-    .play()
-    .then(() => {
-      setIsPlaying(true);
-    })
-    .catch((error) => {
-      console.log("Autoplay blocked:", error);
+    // Song select hone ke baad autoplay
+    audio
+      .play()
+      .then(() => {
+        setIsPlaying(true);
+      })
+      .catch((error) => {
+        console.log("Autoplay blocked:", error);
 
-      setIsPlaying(false);
-    });
-}, [currentSong]);
+        setIsPlaying(false);
+      });
+  }, [currentSong]);
 
   // =========================
   // AUDIO EVENTS
@@ -134,31 +132,7 @@ useEffect(() => {
   }
 
   return (
-    <div
-      className="
-        fixed
-        bottom-3
-        left-3
-        right-3
-
-        lg:left-[260px]
-
-        z-50
-
-        rounded-2xl
-
-        border
-        border-violet-500/30
-
-        bg-[#0b101c]/95
-
-        backdrop-blur-xl
-
-        shadow-[0_0_40px_rgba(79,70,229,0.12)]
-
-        text-white
-      "
-    >
+    <div className="fixed bottom-3 left-3 right-3 lg:left-[260px] z-50 rounded-2xl border border-violet-500/30 bg-[#0b101c]/95 backdrop-blur-xl shadow-[0_0_40px_rgba(79,70,229,0.12)] text-white">
       {/* REAL AUDIO */}
 
       <audio ref={audioRef} />
@@ -167,59 +141,22 @@ useEffect(() => {
       {/* DESKTOP */}
       {/* ========================= */}
 
-      <div
-        className="
-          hidden
-          lg:flex
-
-          h-[138px]
-
-          items-center
-          gap-6
-          px-10
-        "
-      >
+      <div className="hidden lg:flex h-[100px] items-center gap-6 px-10">
         {/* SONG INFO */}
 
-        <div
-          className="
-            flex
-            items-center
-            gap-5
-
-            min-w-[300px]
-          "
-        >
+        <div className="flex items-center gap-5 min-w-[300px]">
           <img
             src={currentSong.posterUrl}
             alt={currentSong.title}
-            className="
-              w-[82px]
-              h-[82px]
-
-              rounded-xl
-              object-cover
-            "
+            className="w-[60px] h-[60px] rounded-xl object-cover"
           />
 
           <div className="min-w-0">
-            <h3
-              className="
-                text-[18px]
-                font-semibold
-                truncate
-              "
-            >
+            <h3 className="text-[18px] font-semibold truncate">
               {currentSong.title}
             </h3>
 
-            <p
-              className="
-                text-gray-400
-                mt-1
-                capitalize
-              "
-            >
+            <p className="text-gray-400 mt-1 capitalize">
               {currentSong.mood || "Unknown mood"}
             </p>
           </div>
@@ -227,17 +164,7 @@ useEffect(() => {
 
         {/* CENTER */}
 
-        <div
-          className="
-            flex-1
-
-            flex
-            flex-col
-            items-center
-
-            gap-5
-          "
-        >
+        <div className="flex-1 flex flex-col items-center gap-5">
           {/* CONTROLS */}
 
           <div className="flex items-center gap-8">
@@ -245,42 +172,21 @@ useEffect(() => {
 
             <button
               onClick={previousSong}
-              className="
-                text-white
-                hover:text-violet-400
-                transition
-              "
+              className="text-white cursor-pointer hover:text-violet-400 transition"
             >
-              <SkipBack size={24} fill="currentColor" />
+              <SkipBack size={22} fill="currentColor" />
             </button>
 
             {/* PLAY / PAUSE */}
 
             <button
               onClick={togglePlay}
-              className="
-                w-[68px]
-                h-[68px]
-
-                rounded-full
-
-                flex
-                items-center
-                justify-center
-
-                bg-violet-600
-
-                shadow-[0_0_30px_rgba(124,58,237,0.55)]
-
-                hover:bg-violet-500
-
-                transition
-              "
+              className="w-[50px] h-[50px] cursor-pointer rounded-full flex items-center justify-center bg-violet-600 shadow-[0_0_30px_rgba(124,58,237,0.55)] hover:bg-violet-500 transition"
             >
               {isPlaying ? (
-                <Pause size={30} fill="white" />
+                <Pause size={24} fill="white" />
               ) : (
-                <Play size={30} fill="white" />
+                <Play size={24} fill="white" />
               )}
             </button>
 
@@ -288,28 +194,15 @@ useEffect(() => {
 
             <button
               onClick={nextSong}
-              className="
-                text-white
-                hover:text-violet-400
-                transition
-              "
+              className="text-white cursor-pointer hover:text-violet-400 transition"
             >
-              <SkipForward size={24} fill="currentColor" />
+              <SkipForward size={22} fill="currentColor" />
             </button>
           </div>
 
           {/* PROGRESS */}
 
-          <div
-            className="
-              flex
-              items-center
-              gap-3
-
-              w-full
-              max-w-[550px]
-            "
-          >
+          <div className="flex items-center gap-3 w-full max-w-[550px]">
             <span className="text-xs text-gray-400">
               {formatTime(currentTime)}
             </span>
@@ -326,10 +219,7 @@ useEffect(() => {
 
                 setCurrentTime(time);
               }}
-              className="
-                flex-1
-                accent-violet-500
-              "
+              className="flex-1 accent-violet-500"
             />
 
             <span className="text-xs text-gray-400">
@@ -343,59 +233,24 @@ useEffect(() => {
       {/* MOBILE / TABLET */}
       {/* ========================= */}
 
-      <div
-        className="
-          lg:hidden
-
-          px-4
-          py-3
-        "
-      >
+      <div className="lg:hidden px-4 py-3">
         <div className="flex items-center gap-3">
           {/* IMAGE */}
 
           <img
             src={currentSong.posterUrl}
             alt={currentSong.title}
-            className="
-              w-[52px]
-              h-[52px]
-
-              rounded-lg
-
-              object-cover
-
-              flex-shrink-0
-            "
+            className="w-[52px] h-[52px] rounded-lg object-cover flex-shrink-0"
           />
 
           {/* INFO */}
 
-          <div
-            className="
-              flex-1
-              min-w-0
-            "
-          >
-            <h3
-              className="
-                text-[14px]
-                font-semibold
-                truncate
-              "
-            >
+          <div className="flex-1 min-w-0">
+            <h3 className="text-[14px] font-semibold truncate">
               {currentSong.title}
             </h3>
 
-            <p
-              className="
-                text-xs
-                text-gray-400
-                mt-0.5
-                truncate
-                capitalize
-              "
-            >
+            <p className="text-xs text-gray-400 mt-0.5 truncate capitalize">
               {currentSong.mood || "Unknown mood"}
             </p>
           </div>
@@ -410,18 +265,7 @@ useEffect(() => {
 
           <button
             onClick={togglePlay}
-            className="
-              w-10
-              h-10
-
-              rounded-full
-
-              flex
-              items-center
-              justify-center
-
-              bg-violet-600
-            "
+            className="w-10 h-10 rounded-full flex items-center justify-center bg-violet-600"
           >
             {isPlaying ? (
               <Pause size={18} fill="white" />
@@ -439,14 +283,7 @@ useEffect(() => {
 
         {/* MOBILE PROGRESS */}
 
-        <div
-          className="
-            mt-3
-            flex
-            items-center
-            gap-2
-          "
-        >
+        <div className="mt-3 flex items-center gap-2">
           <span className="text-[10px] text-gray-500">
             {formatTime(currentTime)}
           </span>
@@ -463,10 +300,7 @@ useEffect(() => {
 
               setCurrentTime(time);
             }}
-            className="
-              flex-1
-              accent-violet-500
-            "
+            className="flex-1 accent-violet-500"
           />
 
           <span className="text-[10px] text-gray-500">

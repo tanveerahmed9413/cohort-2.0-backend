@@ -41,7 +41,7 @@ const MainLayout = ({ onMoodDetected }) => {
       </div>
 
       {/* BOTTOM PLAYER */}
-      <div className="fixed bottom-3 right-0 left-0 lg:left-[245px] z-40">
+      <div className="fixed bottom-3 right-0 left-0 lg:left-[245px] z-30">
         <BottomPlayer />
       </div>
     </div>

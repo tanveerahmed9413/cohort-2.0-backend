@@ -69,7 +69,7 @@ const SongUploadCard = ({ onSuccess }) => {
               </h3>
 
               <p className="mt-1 text-xs text-gray-500">
-                Click to browse your audio files
+                Click to browse your audio files max 10 MB
               </p>
 
               <span className="mt-3 px-3 py-1 rounded-full bg-white/[0.04] border border-white/[0.06] text-[11px] text-gray-500">
@@ -88,7 +88,7 @@ const SongUploadCard = ({ onSuccess }) => {
           </div>
 
           {/* Selected File */}
-          <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.025] border border-white/[0.06]">
+          {/* <div className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.025] border border-white/[0.06]">
             <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-violet-600/10">
               <FileAudio size={19} className="text-violet-400" />
             </div>
@@ -100,7 +100,7 @@ const SongUploadCard = ({ onSuccess }) => {
                 Select an audio file to continue
               </p>
             </div>
-          </div>
+          </div> */}
 
           {/* Submit */}
           <button
