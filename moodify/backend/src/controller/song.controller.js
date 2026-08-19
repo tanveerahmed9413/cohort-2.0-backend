@@ -7,18 +7,16 @@ const { analyzeAudio } = require("../services/moodAnalyzer.service");
 
 async function uploadSong(req, res) {
   try {
-    const songBuffer = req.file.buffer;
-
-    const tags = id3.read(songBuffer);
-
     if (!req.file) {
       return res.status(400).json({
         success: false,
         message: "Song file is required",
       });
     }
+    const songBuffer = req.file.buffer;
 
-    console.log("Song received:", req.file.originalname);
+    const tags = id3.read(songBuffer);
+
 
     // =========================
     // RECCOBEATS ANALYSIS
@@ -26,7 +24,7 @@ async function uploadSong(req, res) {
 
     const analysis = await analyzeAudio(req.file.buffer, req.file.originalname);
 
-    console.log("RECCOBEATS ANALYSIS:", JSON.stringify(analysis, null, 2));
+
 
     if (!tags?.title) {
       return res.status(400).json({
