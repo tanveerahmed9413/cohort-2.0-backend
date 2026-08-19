@@ -12,13 +12,20 @@ export async function getAllSongs() {
 
 export const getSongsByMood = async (mood) => {
   const response = await api.get(`/api/songs/mood/${mood}`);
-  console.log(response.data.songs)
+  console.log(response.data.songs);
   return response.data.songs;
 };
 
 export async function songUpload(songFile) {
-  const formData = new FormData();
-  formData.append("song", songFile);
-  const response = await api.post("/api/songs/upload", formData);
-  return response.data;
+  try {
+    const formData = new FormData();
+    formData.append("song", songFile);
+    const response = await api.post("/api/songs/upload", formData);
+
+    return response.data;
+  } catch (error) {
+    console.error("UPLOAD ERROR:", error.message);
+
+    throw error;
+  }
 }
