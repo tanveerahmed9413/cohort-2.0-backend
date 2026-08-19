@@ -3,12 +3,30 @@ const upload = require("../middleware/multer.middleware");
 const imagekit = require("../services/imageKit.service");
 const id3 = require("node-id3");
 
+const { analyzeAudio } = require("../services/moodAnalyzer.service");
+
 async function uploadSong(req, res) {
   try {
     const songBuffer = req.file.buffer;
-    const { mood } = req.body;
 
     const tags = id3.read(songBuffer);
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Song file is required",
+      });
+    }
+
+    console.log("Song received:", req.file.originalname);
+
+    // =========================
+    // RECCOBEATS ANALYSIS
+    // =========================
+
+    const analysis = await analyzeAudio(req.file.buffer, req.file.originalname);
+
+    console.log("RECCOBEATS ANALYSIS:", JSON.stringify(analysis, null, 2));
 
     if (!tags?.title) {
       return res.status(400).json({
@@ -40,7 +58,7 @@ async function uploadSong(req, res) {
       title: tags.title,
       songUrl: songFile.url,
       posterUrl: posterFile.url,
-      mood,
+      mood: analysis.mood,
     });
 
     return res.status(201).json({
@@ -71,15 +89,14 @@ async function getSongsByMood(req, res) {
   const { mood } = req.params;
 
   const songs = await songModel.find({
-    mood: mood.toLowerCase()
-  })
+    mood: mood.toLowerCase(),
+  });
 
   return res.status(200).json({
     message: "success to fetch mood songs",
     mood,
-    songs
-  })
-
+    songs,
+  });
 }
 
-module.exports = { uploadSong, getSongs,getSongsByMood };
+module.exports = { uploadSong, getSongs, getSongsByMood };
