@@ -38,7 +38,7 @@ const SongCard = ({ song, onPlay }) => {
 
       {/* ================= MOOD ================= */}
 
-      <div className="  hidden  sm:block min-w-[100px] ">
+      <div className="min-w-[100px] ">
         <span className=" inline-flex px-3 py-1  rounded-full  text-xs bg-violet-500/10 text-violet-400 border border-violet-500/10 capitalize">
           {song.mood || "Unknown"}
         </span>

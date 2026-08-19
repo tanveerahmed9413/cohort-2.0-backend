@@ -8,7 +8,10 @@ export const HomeProvider = ({ children }) => {
    const [uploadedSong, setUploadedSong] = useState(null);
   const [currentSong, setCurrentSong] = useState();
   const [currentIndex, setCurrentIndex] = useState();
-  const [mood,setMood] = useState("happy")
+  const [mood,setMood] = useState(null)
+  const [selectedMood, setSelectedMood] = useState("all");
+
+  
 
   return (
     <HomeContext.Provider
@@ -30,6 +33,9 @@ export const HomeProvider = ({ children }) => {
 
         mood,
         setMood,
+
+        selectedMood,
+        setSelectedMood,
       }}
     >
       {children}

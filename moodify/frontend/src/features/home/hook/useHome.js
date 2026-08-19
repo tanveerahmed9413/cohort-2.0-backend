@@ -6,7 +6,7 @@ import { getAllSongs, songUpload, getSongsByMood } from "../services/home.api";
 export const useHome = () => {
   const context = useContext(HomeContext);
   const [uploadLoading, setUploadLoading] = useState(false);
-  const [moodLoading, setMoodLoading] = useState(false)
+  const [moodLoading, setMoodLoading] = useState(false);
   if (!context) {
     throw new Error("useHome must be used inside HomeProvider");
   }
@@ -26,9 +26,12 @@ export const useHome = () => {
 
     uploadedSong,
     setUploadedSong,
-    
+
     mood,
-    setMood
+    setMood,
+
+    selectedMood,
+    setSelectedMood,
   } = context;
 
   // GET ALL SONGS
@@ -50,22 +53,22 @@ export const useHome = () => {
   };
 
   const handleGetSongsByMood = async (detectedMood) => {
-  try {
-    console.log("[handleGetSongsByMood] called with:", detectedMood);
-    setMoodLoading(true);
-    setMood(detectedMood);
+    try {
+      console.log("[handleGetSongsByMood] called with:", detectedMood);
+      setMoodLoading(true);
+      setMood(detectedMood);
 
-    const data = await getSongsByMood(detectedMood);
-    console.log("[handleGetSongsByMood] API response:", data);
+      const data = await getSongsByMood(detectedMood);
+      console.log("[handleGetSongsByMood] API response:", data);
 
-    setSongs(data);
-  } catch (error) {
-    console.error("[handleGetSongsByMood] Failed to get mood songs:", error);
-    setSongs([]);
-  } finally {
-    setMoodLoading(false);
-  }
-};
+      setSongs(data);
+    } catch (error) {
+      console.error("[handleGetSongsByMood] Failed to get mood songs:", error);
+      setSongs([]);
+    } finally {
+      setMoodLoading(false);
+    }
+  };
 
   const handleUploadSong = async (formData) => {
     try {
@@ -122,6 +125,16 @@ export const useHome = () => {
     setCurrentSong(songs[previousIndex]);
   };
 
+  const handleMoodFilter = async (selectedMood) => {
+    setSelectedMood(selectedMood);
+
+    if (selectedMood === "all") {
+      await getSongs();
+    } else {
+      await handleGetSongsByMood(selectedMood);
+    }
+  };
+
   return {
     songs,
     loading,
@@ -139,6 +152,9 @@ export const useHome = () => {
 
     mood,
     moodLoading,
-    handleGetSongsByMood
+    handleGetSongsByMood,
+
+    handleMoodFilter,
+    selectedMood,
   };
 };

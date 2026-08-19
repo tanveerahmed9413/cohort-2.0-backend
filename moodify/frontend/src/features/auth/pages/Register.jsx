@@ -114,7 +114,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-lg bg-indigo-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-indigo-500 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
+              className="w-full cursor-pointer  rounded-lg bg-indigo-600 px-4 py-3 text-sm font-semibold text-white transition hover:bg-indigo-500 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? "Creating account..." : "Create account"}
             </button>
@@ -125,7 +125,7 @@ const Register = () => {
             Already have an account?{" "}
             <Link
               to="/login"
-              className="font-medium text-indigo-400 hover:text-indigo-300 transition"
+              className="font-medium cursor-pointer text-indigo-400 hover:text-indigo-300 transition"
             >
               Login
             </Link>

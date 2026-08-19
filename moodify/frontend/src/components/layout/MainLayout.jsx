@@ -6,7 +6,7 @@ import BottomPlayer from "./BottomPlayer";
 import FaceExpression from "../../features/expression/components/FaceExpression";
 import { useHome } from "../../features/home/hook/useHome";
 
-const MainLayout = ({ onMoodDetected }) => {
+const MainLayout = () => {
   const { handleGetSongsByMood } = useHome();
   const handleMoodDetected = (mood) => {
     handleGetSongsByMood(mood);

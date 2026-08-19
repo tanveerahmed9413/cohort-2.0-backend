@@ -59,17 +59,18 @@ export const detect = ({
     let currentExpression = "neutral";
     let mood = "neutral";
 
-    if (smile > 0.35) {
-      currentExpression = "happy";
-      mood = "happy";
-    } else if (jawOpen > 0.2 && browUp > 0.2) {
+    if (jawOpen > 0.2 && browUp > 0.2) {
       currentExpression = "surprised";
       mood = "surprised";
-    } else if (frown > 0.03 || browDown > 0.25) {
+    } else if (frown > 0.15 || browDown > 0.15) {
       currentExpression = "sad";
       mood = "sad";
+    } else if (smile > 0.3) {
+      currentExpression = "happy";
+      mood = "happy";
     }
 
+    console.log({ smile, frown, browDown, jawOpen, browUp });
     setExpression(currentExpression);
     if (onMoodDetected) {
       onMoodDetected(mood);

@@ -5,6 +5,7 @@ import Register from "./features/auth/pages/Register";
 import ProtectedRoute from "./features/auth/components/ProtectedRoute";
 import MainLayout from "./components/layout/MainLayout";
 import Home from "./features/home/pages/Home";
+import NotFound from "./components/layout/NotFound";
 
 
 const AppRoutes = () => {
@@ -19,7 +20,7 @@ const AppRoutes = () => {
               <Route index element={<Home />} />
               
             </Route>
-            <Route path="*" element={<h3>Not Found</h3>} />
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </BrowserRouter>
